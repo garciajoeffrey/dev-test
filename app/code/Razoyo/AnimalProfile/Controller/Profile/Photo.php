@@ -36,6 +36,8 @@ class Photo implements HttpGetActionInterface
      */
     protected $http;
 
+    protected $request;
+
     /**
      * Constructor
      *
@@ -48,12 +50,14 @@ class Photo implements HttpGetActionInterface
         PageFactory $resultPageFactory,
         Json $json,
         LoggerInterface $logger,
-        Http $http
+        Http $http,
+        \Magento\Framework\App\Request\Http $request
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->serializer = $json;
         $this->logger = $logger;
         $this->http = $http;
+        $this->request = $request;
     }
 
     /**
@@ -63,7 +67,20 @@ class Photo implements HttpGetActionInterface
      */
     public function execute()
     {
-        $photo = new Animal\Cat();
+        $animal = $this->request->getParam('animal');
+        switch ($animal){
+            case 'anteater':
+                $photo = new Animal\Anteater();
+                break;
+            case 'dog':
+                $photo = new Animal\Dog();
+                break;
+            case 'llama':
+                $photo = new Animal\Llama();
+                break;
+            default:
+                $photo = new Animal\Cat();
+        }
 
         try {
             return $this->jsonResponse(['photo' => $photo->getContent()]);

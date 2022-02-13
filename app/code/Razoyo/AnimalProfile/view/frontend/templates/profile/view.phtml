@@ -4,24 +4,23 @@
  */
 ?>
 <p><?= $block->getGreeting() ?></p>
+<p>
+    <select name="animal" id="select-animal">
+        <option selected="true" disabled="disabled" value=''>Choose Profile Picture</option>
+        <option value='cat'>Cat</option>
+        <option value='dog'>Dog</option>
+        <option value='llama'>Llama</option>
+        <option value='anteater'>Anteater</option>
+    </select>
+</p>
 <div id="animalid-photo"></div>
-<script>
-    require(['jquery', 'domReady!'], function ($) {
-        return $.ajax({
-            url: '<?= $block->getPhotoUrl() ?>',
-            type: 'GET'
-        }).done(
-            function (response) {
-                console.log(response);
-                const photoImg = document.createElement('img'); 
-                photoImg.alt = 'Profile photo';
-                photoImg.src = response.photo;
-
-                const photoDiv = document.getElementById('animalid-photo');
-                if (photoDiv) {
-                    photoDiv.appendChild(photoImg);
-                }
+<script type="text/x-magento-init">
+    {
+        "#select-animal": {
+            "select-animal-profile": {
+                "profileDiv": "#animalid-photo",
+                "profilePhoto": "<?= $block->getPhotoUrl() ?>"
             }
-        );
-    });
+        }
+    }
 </script>
